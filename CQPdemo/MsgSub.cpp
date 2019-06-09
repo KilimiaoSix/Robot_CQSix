@@ -45,7 +45,7 @@ void GroupMsgSub::threadMain()
 
 			if (msg.msg == "!github")  //代码开源
 			{
-				CQ_sendGroupMsg(ac, msg.fromGroup, "GitHub代码:https://github.com/KilimiaoSix/Robot_CQSix.git 目前版本是：1.0.1");
+				CQ_sendGroupMsg(ac, msg.fromGroup, "GitHub代码:https://github.com/KilimiaoSix/Robot_CQSix.git 目前版本是：1.0.3");
 			}
 			else if (msg.msg == "小桐喵" && msg.fromQQ == 1048597043)
 			{
