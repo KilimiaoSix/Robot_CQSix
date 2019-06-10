@@ -45,7 +45,7 @@ void GroupMsgSub::threadMain()
 
 			if (msg.msg == "!github")  //代码开源
 			{
-				CQ_sendGroupMsg(ac, msg.fromGroup, "GitHub代码:https://github.com/KilimiaoSix/Robot_CQSix.git 目前版本是：1.0.3");
+				CQ_sendGroupMsg(ac, msg.fromGroup, "GitHub代码:https://github.com/KilimiaoSix/Robot_CQSix.git 目前版本是：1.0.4");
 			}
 			else if (msg.msg == "小桐喵" && msg.fromQQ == 1048597043)
 			{
@@ -89,7 +89,7 @@ void GroupMsgSub::threadMain()
 			}
 			else if (msg.msg == "小桐喵，帮我迫害海蛎子" && msg.fromGroup == 982711563)
 			{
-				CQ_sendGroupMsg(ac, msg.fromGroup, "海蛎子是臭DD！DD kimo");
+				CQ_sendGroupMsg(ac, msg.fromGroup, "海蛎子什么时候女装出道喵？");
 			}
 			else if ((msg.msg.find("喜欢") != -1 || msg.msg.find("suki") != -1) && msg.fromGroup == 982711563 && msg.fromQQ == 51303014)
 			{
@@ -103,7 +103,7 @@ void GroupMsgSub::threadMain()
 			{
 				CQ_sendGroupMsg(ac, msg.fromGroup, "火 风子 火");
 			}
-			else if (msg.msg.find("cocomi suki") != -1 && msg.msg.find("suki") != -1 && msg.fromQQ == 1048597043 && msg.fromGroup == 982711563)
+			else if (msg.msg.find("cocomi suki") == -1 && msg.msg.find("suki") != -1 && msg.fromQQ == 1048597043 && msg.fromGroup == 982711563)
 			{
 				CQ_sendGroupMsg(ac, msg.fromGroup, "主人你又DD了");
 			}
@@ -117,7 +117,11 @@ void GroupMsgSub::threadMain()
 			}
 			else if (msg.msg == "!MC" && msg.fromGroup == 982711563)
 			{
-				CQ_sendGroupMsg(ac,msg.fromGroup,"要玩MC的加群765455518");
+				CQ_sendGroupMsg(ac, msg.fromGroup, "要玩MC的加群765455518");
+			}
+			else if (msg.msg == "迫害海蛎子" && msg.fromGroup == 982711563)
+			{
+				CQ_sendGroupMsg(ac, msg.fromGroup, "[CQ:image,file=1.jpg]");
 			}
 			else if (msg.msg == "!白名单注册" && msg.fromGroup == 765455518)  //软件注册还没搞定，稍等
 				CQ_sendGroupMsg(ac, msg.fromGroup, "我还没搞定软件注册，要注册的自己填表 https://docs.qq.com/sheet/DZEJQb3dCb0piRXF0?preview_token=&coord=H7%24H7%240%240%240%240&tab=BB08J2");

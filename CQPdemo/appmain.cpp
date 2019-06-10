@@ -151,13 +151,21 @@ CQEVENT(int32_t, __eventSystem_GroupMemberDecrease, 32)(int32_t subType, int32_t
 
 CQEVENT(int32_t, __eventSystem_GroupMemberIncrease, 32)(int32_t subType, int32_t sendTime, int64_t fromGroup, int64_t fromQQ, int64_t beingOperateQQ) 
 {
+	char str[200];
 	if (fromGroup == 701962770)
 	{
-		CQ_sendGroupMsg(ac,fromGroup, "欢迎加入福州大学19级物信学院新生群，新进群的同学请阅读群公告并按公告修改群名片，如有问题可以询问群内学长学姐");
+		sprintf(str, "[CQ:at,qq=%lld] 欢迎加入福州大学19级物信学院新生群，新进群的同学请阅读群公告并按公告修改群名片，如有问题可以询问群内学长学姐", beingOperateQQ);
+		CQ_sendGroupMsg(ac,fromGroup,str);
 	}
 	if (fromGroup == 982711563)
-		CQ_sendGroupMsg(ac, fromGroup, "欢迎新DD加入cocomi王国！");
-
+	{
+		sprintf(str, "[CQ:at,qq=%lld] 欢迎新DD加入cocomi王国！",beingOperateQQ);
+		CQ_sendGroupMsg(ac, fromGroup, str);
+	}
+	if (fromGroup == 765455518)
+	{
+		CQ_sendGroupMsg(ac, fromGroup, "欢迎来到cocomi 王国建设群，新进群的cocoMin请先阅读群公告");
+	}
 	return EVENT_IGNORE; //关于返回值说明, 见“_eventPrivateMsg”函数
 }
 
@@ -198,6 +206,10 @@ CQEVENT(int32_t, __eventRequest_AddGroup, 32)(int32_t subType, int32_t sendTime,
 	//	CQ_setGroupAddRequestV2(ac, responseFlag, REQUEST_GROUPINVITE, REQUEST_ALLOW, "");
 	//}
 	if (fromGroup == 701962770)
+	{
+		CQ_setGroupAddRequestV2(ac, responseFlag, REQUEST_GROUPADD, REQUEST_ALLOW, "");
+	}
+	if (fromGroup == 765455518)
 	{
 		CQ_setGroupAddRequestV2(ac, responseFlag, REQUEST_GROUPADD, REQUEST_ALLOW, "");
 	}
