@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include <time.h>
 #define random(x) (rand()%x)
 #include <string.h>
 bool flag_debug = false;
@@ -14,21 +15,74 @@ std::string RobotName_ZN = "菲拉";
 
 //导入全局变量 ac   在appmain.h 中定义
 extern int ac;
-bool Find(char* a,char* str)  
-{
-		if (strstr(str, a) != NULL)
-		{	
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-}
 /*bool OsuGroups(msg.fromGroup) {
 
 }
 */
+void TimeJudge(SYSTEMTIME &st,GroupMsg &msg,bool master_t)
+{
+	if (st.wHour >= 5 && st.wHour < 11)  //早上时间
+	{
+		if (master_t)
+		{
+			CQ_sendGroupMsg(ac, msg.fromGroup, "主人，早上好！今天也请继续努力加油吧喵~");
+		}
+		else
+		{
+			CQ_sendGroupMsg(ac, msg.fromGroup, "早上好喵！新的一天继续加油喵~！");
+		}
+	}
+	else if (st.wHour >= 11 && st.wHour < 15)  //中午时间
+	{
+		if (master_t)
+		{
+			CQ_sendGroupMsg(ac, msg.fromGroup, "主人，中午好！午饭有好好吃喵？~");
+		}
+		else
+		{
+			CQ_sendGroupMsg(ac, msg.fromGroup, "午安desu~喵！");
+		}
+	}
+	else if (st.wHour >= 15 && st.wHour < 18)  //下午时间
+	{
+		if (master_t)
+		{
+			CQ_sendGroupMsg(ac, msg.fromGroup, "主人，下午好！~");
+		}
+		else
+		{
+			CQ_sendGroupMsg(ac, msg.fromGroup, "下午好喵~！");
+		}
+	}
+	else if (st.wHour >= 18 && st.wHour < 23)  //晚上时间
+	{
+		if (master_t)
+		{
+			CQ_sendGroupMsg(ac, msg.fromGroup, "主人，晚上好！~");
+		}
+		else
+		{
+			CQ_sendGroupMsg(ac, msg.fromGroup, "喵！？晚上好desu喵~");
+		}
+	}
+	else  //深夜
+	{
+		if (master_t)
+		{
+			CQ_sendGroupMsg(ac, msg.fromGroup, "主人，很迟了哦~~，快去睡，群里有我看守");
+		}
+		else
+		{
+			CQ_sendGroupMsg(ac, msg.fromGroup, "zzzzzzzzzzz");
+		}
+	}
+}
+void Time_Message(SYSTEMTIME& st, GroupMsg& msg)
+{
+	char str[200];
+	sprintf(str, "现在的时间是：%d 时 %d 分", st.wHour, st.wMinute);
+	CQ_sendGroupMsg(ac,msg.fromGroup,str);
+}
 void GroupMsgSub::threadMain()
 {
 	while (!m_quit)
@@ -36,6 +90,8 @@ void GroupMsgSub::threadMain()
 		if (m_groupMsgBuffer.size() > 0)
 		{
 			m_mutex.lock();
+			SYSTEMTIME st = { 0 };
+			GetLocalTime(&st);
 			GroupMsg msg = m_groupMsgBuffer.front();
 			m_groupMsgBuffer.pop();
 			m_mutex.unlock();
@@ -47,9 +103,14 @@ void GroupMsgSub::threadMain()
 			{
 				CQ_sendGroupMsg(ac, msg.fromGroup, "GitHub代码:https://github.com/KilimiaoSix/Robot_CQSix.git 目前版本是：1.0.4");
 			}
+			else if (msg.msg == "!词库编辑")
+			{
+				CQ_sendGroupMsg(ac, msg.fromGroup, "请填表：https://docs.qq.com/sheet/DZHB4SVRvaGtEeWVq?preview_token=&coord=C14%24C14%240%240%240%240&tab=BB08J2");
+				CQ_sendGroupMsg(ac, msg.fromGroup, "不要教些乱七八糟的东西哦！");
+			}
 			else if (msg.msg == "小桐喵" && msg.fromQQ == 1048597043)
 			{
-				CQ_sendGroupMsg(ac, msg.fromGroup, "主人你好！");
+				TimeJudge(st,msg,true);
 			}
 			else if (msg.msg == "小桐喵你好" && msg.fromQQ == 1048597043)
 			{
@@ -57,7 +118,7 @@ void GroupMsgSub::threadMain()
 			}
 			else if ((msg.msg == "小桐喵"))
 			{
-				CQ_sendGroupMsg(ac, msg.fromGroup, "喵?");
+				TimeJudge(st, msg, false);
 			}
 			else if (msg.msg == "小桐喵啾啾" && msg.fromQQ != 1048597043)
 			{
@@ -67,7 +128,7 @@ void GroupMsgSub::threadMain()
 			{
 				i = random(4);
 				if (i == 1)
-					CQ_sendGroupMsg(ac, msg.fromGroup, "请……请别把我当小孩子喵！");
+					CQ_sendGroupMsg(ac, msg.fromGroup, "mofumofu~！");
 				else if (i == 2)
 					CQ_sendGroupMsg(ac, msg.fromGroup, "别乱摸啦喵！……");
 				else if (i == 3)
@@ -85,7 +146,7 @@ void GroupMsgSub::threadMain()
 			}
 			else if (msg.msg == "摸摸小桐喵" && msg.fromQQ == 1048597043)
 			{
-				CQ_sendGroupMsg(ac, msg.fromGroup, "主人的摸摸好舒服喵~~~");
+				CQ_sendGroupMsg(ac, msg.fromGroup, "主人的mofumofu~~~");
 			}
 			else if (msg.msg == "小桐喵，帮我迫害海蛎子" && msg.fromGroup == 982711563)
 			{
@@ -111,7 +172,7 @@ void GroupMsgSub::threadMain()
 			{
 				CQ_sendGroupMsg(ac, msg.fromGroup, "黄老板快女装");
 			}
-			else if (msg.msg == "小桐喵，我想玩服务器怎么办" && msg.fromGroup == 765455518)
+			else if (msg.msg == "小桐喵，我想玩MC怎么办" && msg.fromGroup == 765455518)
 			{
 				CQ_sendGroupMsg(ac, msg.fromGroup, "第一步，请安装Java，第二步，请购买正版官方国际服并下载启动器，第三步，安装mod，第四步，新服可以直接进，旧服请填写群文件的表注册白名单谢谢！如果还不明白请看群公告");
 			}
@@ -141,7 +202,10 @@ void GroupMsgSub::threadMain()
 			{
 				CQ_sendGroupMsg(ac, msg.fromGroup, "第一，先看群公告，第二，改群名片，第三，爆照发红包！");
 			}//新人提示
-		
+			else if (msg.msg == "小桐喵，现在几点了" || msg.msg == "!time" || msg.msg == "!时间")
+			{
+				Time_Message(st,msg);
+			}
 		}
 		else
 		{
