@@ -73,9 +73,100 @@ void TimeJudge(SYSTEMTIME &st,GroupMsg &msg,bool master_t)
 		}
 		else
 		{
-			CQ_sendGroupMsg(ac, msg.fromGroup, "zzzzzzzzzzz");
+			CQ_sendGroupMsg(ac, msg.fromGroup, "zzzzzzzzzzz我困了喵~~");
 		}
 	}
+}
+//用于每天打招呼！
+void Say_Hello(SYSTEMTIME& st, GroupMsg& msg, bool master_t)
+{
+	if (msg.msg == "小桐喵，早上好")
+	{
+		if (st.wHour >= 5 && st.wHour < 11)
+		{
+			if (master_t)
+				CQ_sendGroupMsg(ac, msg.fromGroup, "主人早上好！新的一天也一起加油吧！");
+			else
+				CQ_sendGroupMsg(ac, msg.fromGroup, "早上好desu喵！新的一天也要好好工作哦！");
+		}
+		else
+		{
+			if (master_t)
+				CQ_sendGroupMsg(ac, msg.fromGroup, "主人，现在可不是早上哦~！");
+			else
+				CQ_sendGroupMsg(ac, msg.fromGroup, "现在可不是早上哦！");
+		}
+	}
+	else if (msg.msg == "小桐喵，中午好")
+	{
+		if (st.wHour >= 11 && st.wHour < 15)
+		{
+			if (master_t)
+				CQ_sendGroupMsg(ac, msg.fromGroup, "主人，中午好！要好好吃午饭然后好好地睡一觉哦！");
+			else
+				CQ_sendGroupMsg(ac, msg.fromGroup, "午安~~~！");
+		}
+		else
+		{
+			if (master_t)
+				CQ_sendGroupMsg(ac, msg.fromGroup, "主人，现在可不是中午哦~睡迷糊了吗？");
+			else
+				CQ_sendGroupMsg(ac, msg.fromGroup, "？？？");
+		}
+	}
+	else if (msg.msg == "小桐喵，下午好")
+	{
+		if (st.wHour >= 15 && st.wHour < 18)
+		{
+			if (master_t)
+				CQ_sendGroupMsg(ac, msg.fromGroup, "主人，下午好！要好好去学习（工作）哦！");
+			else
+				CQ_sendGroupMsg(ac, msg.fromGroup, "下午好！要好好去学习（工作）哦！");
+		}
+		else
+		{
+			if (master_t)
+				CQ_sendGroupMsg(ac, msg.fromGroup, "主人，现在可不是下午哦~mofumofu~");
+			else
+				CQ_sendGroupMsg(ac, msg.fromGroup, "早就不是下午了哦~");
+		}
+
+	}
+	else if (msg.msg == "小桐喵，晚上好")
+	{
+		if (st.wHour >= 15 && st.wHour < 18)
+		{
+			if (master_t)
+				CQ_sendGroupMsg(ac, msg.fromGroup, "主人，晚上好！");
+			else
+				CQ_sendGroupMsg(ac, msg.fromGroup, "晚上好哦~！");
+		}
+		else
+		{
+			if (master_t)
+				CQ_sendGroupMsg(ac, msg.fromGroup, "主人，现在可不是晚上哦~啾啾~");
+			else
+				CQ_sendGroupMsg(ac, msg.fromGroup, "emmmm好像不是晚上哦~");
+		}
+	}
+	else if (msg.msg == "小桐喵，晚安")
+	{
+		if (st.wHour >= 23 || (st.wHour >= 0 && st.wHour < 5))
+		{
+			if (master_t)
+				CQ_sendGroupMsg(ac, msg.fromGroup, "主人，晚安！今天一天也辛苦了，好好休息哦！");
+			else
+				CQ_sendGroupMsg(ac, msg.fromGroup, "晚安！");
+		}
+		else
+		{
+			if (master_t)
+				CQ_sendGroupMsg(ac, msg.fromGroup, "主人，现在可不是睡觉的时间哦");
+			else
+				CQ_sendGroupMsg(ac, msg.fromGroup, "别睡了，太阳晒屁股了！");
+		}
+	}
+	
 }
 void Time_Message(SYSTEMTIME& st, GroupMsg& msg)
 {
@@ -140,6 +231,10 @@ void GroupMsgSub::threadMain()
 					CQ_sendGroupMsg(ac, msg.fromGroup, "别乱摸喵，恶心喵！");
 				}
 			}
+			else if (msg.msg == "小桐喵真可爱" && msg.fromGroup == 982711563)
+			{
+				CQ_sendGroupMsg(ac, msg.fromGroup, "wwwwwwwwwwwww");
+			}
 			else if (msg.msg == "小桐喵啾啾" && msg.fromQQ == 1048597043)
 			{
 				CQ_sendGroupMsg(ac, msg.fromGroup, "主人也啾啾！~~~~喵");
@@ -182,7 +277,11 @@ void GroupMsgSub::threadMain()
 			}
 			else if (msg.msg == "迫害海蛎子" && msg.fromGroup == 982711563)
 			{
-				CQ_sendGroupMsg(ac, msg.fromGroup, "[CQ:image,file=1.jpg]");
+				int i = random(2);
+				if(i == 1)
+					CQ_sendGroupMsg(ac, msg.fromGroup, "[CQ:image,file=1.jpg]");
+				else
+					CQ_sendGroupMsg(ac, msg.fromGroup, "[CQ:image,file=2.jpg]");
 			}
 			else if (msg.msg == "!白名单注册" && msg.fromGroup == 765455518)  //软件注册还没搞定，稍等
 				CQ_sendGroupMsg(ac, msg.fromGroup, "我还没搞定软件注册，要注册的自己填表 https://docs.qq.com/sheet/DZEJQb3dCb0piRXF0?preview_token=&coord=H7%24H7%240%240%240%240&tab=BB08J2");
@@ -206,6 +305,27 @@ void GroupMsgSub::threadMain()
 			{
 				Time_Message(st,msg);
 			}
+			//////打招呼！
+			else if (msg.msg == "小桐喵，早上好" || msg.msg == "小桐喵，中午好" || msg.msg == "小桐喵，下午好" || msg.msg == "小桐喵，晚上好" || msg.msg == "小桐喵，晚安")
+			{
+				if (msg.fromQQ == 1048597043)
+				{
+					Say_Hello(st, msg, true);
+				}
+				else
+				{
+					Say_Hello(st, msg, false);
+				}
+			 }
+			else if (msg.msg == "小桐喵劝劝黄老板" && msg.fromGroup == 982711563)
+			{
+				CQ_sendGroupMsg(ac, msg.fromGroup, "kou酱，那个，女装出道好不好。");
+			}
+			else if (msg.msg == "糕姐姐嘶哈嘶哈" && (msg.fromGroup == 982711563 ||  msg.fromGroup == 765455518))
+			{
+				CQ_sendGroupMsg(ac, msg.fromGroup, "糕姐姐嘶哈嘶哈");
+			}
+
 		}
 		else
 		{
